@@ -97,7 +97,7 @@ const HeroSection = ({ theme, isVisible, profileRef }) => {
           <div className="flex justify-center space-x-6">
             {[
               { icon: <Github size={24} />, href: "https://github.com/ShawonBarman" },
-              { icon: <Linkedin size={24} />, href: "https://linkedin.com/in/ShawonBarman" },
+              { icon: <Linkedin size={24} />, href: "https://www.linkedin.com/in/shawon-barman-688968176/" },
               { icon: <Mail size={24} />, href: "mailto:shawonbarmon34@gmail.com" }
             ].map((item, index) => (
               <a 
@@ -645,7 +645,7 @@ const ContactSection = ({ theme }) => {
               <div className="flex space-x-4 mt-8">
                 {[
                   { icon: <Github size={20} />, href: "https://github.com/ShawonBarman" },
-                  { icon: <Linkedin size={20} />, href: "https://linkedin.com/in/ShawonBarman" },
+                  { icon: <Linkedin size={20} />, href: "https://www.linkedin.com/in/shawon-barman-688968176/" },
                   { icon: <Mail size={20} />, href: "mailto:shawon@tmsez.com" }
                 ].map((item, index) => (
                   <a 
