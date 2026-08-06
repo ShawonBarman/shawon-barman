@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  Code, FileCode, Database, BookOpen, Award, BriefcaseBusiness, Github, Linkedin,
+  Code, FileCode, Database, BriefcaseBusiness, Github, Linkedin,
   Mail, MapPin, Phone, ExternalLink, ArrowUpRight, Star, Sparkles, Bot,
   MessageSquare, Truck, Navigation, CreditCard, ScanText, Server, Cpu,
-  Zap, TrendingUp, ShieldCheck, GraduationCap, Trophy
+  Zap, ShieldCheck, GraduationCap, Trophy
 } from 'lucide-react';
 import myImage from './images/Shawon.jpg';
 import projectImage1 from './images/project1.PNG';
