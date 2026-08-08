@@ -3,7 +3,7 @@ import {
   Code, FileCode, Database, BriefcaseBusiness, Github, Linkedin,
   Mail, MapPin, Phone, ExternalLink, ArrowUpRight, Star, Sparkles, Bot,
   MessageSquare, Truck, Navigation, CreditCard, ScanText, Server, Cpu,
-  Zap, ShieldCheck, GraduationCap, Trophy, ChevronDown
+  Zap, GraduationCap, Trophy, ChevronDown, Receipt, Users, KeyRound
 } from 'lucide-react';
 import myImage from './images/Shawon.jpg';
 import projectImage1 from './images/project1.PNG';
@@ -67,6 +67,47 @@ const CountUp = ({ target, decimals = 0, prefix = '', suffix = '', duration = 16
   }, [start, target, duration]);
 
   return <>{prefix}{val.toFixed(decimals)}{suffix}</>;
+};
+
+/* ---------- Mouse-tilt wrapper for cards ---------- */
+const TiltCard = ({ children, className = '', max = 6 }) => {
+  const ref = useRef(null);
+  const handleMove = (e) => {
+    const el = ref.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width - 0.5;
+    const py = (e.clientY - r.top) / r.height - 0.5;
+    el.style.transform = `perspective(900px) rotateX(${(-py * max).toFixed(2)}deg) rotateY(${(px * max).toFixed(2)}deg) translateY(-6px)`;
+  };
+  const reset = () => { if (ref.current) ref.current.style.transform = ''; };
+  return (
+    <div ref={ref} onMouseMove={handleMove} onMouseLeave={reset} className={`tilt ${className}`}>
+      {children}
+    </div>
+  );
+};
+
+/* ---------- Infinite scrolling tech marquee ---------- */
+const TechMarquee = ({ theme }) => {
+  const items = [
+    "Python", "Django", "Flask", "React", "PostgreSQL", "TimescaleDB", "Redis",
+    "QuickBooks API", "MyCarrierPackets", "Stripe", "Firebase Auth", "Google OAuth",
+    "WebSockets", "REST APIs", "LLMs / RAG", "OCR", "Tailwind CSS"
+  ];
+  const row = [...items, ...items];
+  return (
+    <div className={`marquee-wrap py-5 overflow-hidden border-y ${theme === 'dark' ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'}`}>
+      <div className="marquee">
+        {row.map((t, i) => (
+          <span key={i} className="mx-4 inline-flex items-center gap-2 text-sm font-medium text-gray-400 whitespace-nowrap">
+            <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-500"></span>
+            {t}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 /* ---------- Section heading with gradient + animated underline ---------- */
@@ -170,9 +211,10 @@ const HeroSection = ({ theme }) => {
         <Reveal delay={300}>
           <p className="text-lg md:text-xl max-w-3xl text-center mb-10 leading-relaxed text-gray-400">
             Founding engineer at a US-based trucking &amp; logistics SaaS, building end-to-end from
-            Dhaka — <span className="text-blue-400 font-semibold">AI copilots</span>, real-time systems,
-            and data infrastructure that moves the numbers: a <span className="text-blue-400 font-semibold">99.94%</span> database
-            footprint cut and <span className="text-blue-400 font-semibold">92.4%</span> fewer GPS writes, in production.
+            Dhaka — <span className="text-blue-400 font-semibold">AI copilots</span>,
+            <span className="text-blue-400 font-semibold"> real-time systems</span>, deep
+            <span className="text-blue-400 font-semibold"> third-party integrations</span> and data
+            infrastructure across the full logistics stack.
           </p>
         </Reveal>
 
@@ -223,8 +265,8 @@ const StatsSection = ({ theme }) => {
   }, []);
 
   const stats = [
-    { target: 99.94, decimals: 2, suffix: "%", label: "DB footprint reduced", sub: "Time-series migration" },
-    { target: 92.4, decimals: 1, suffix: "%", label: "Fewer GPS writes", sub: "Redis dedup pipeline" },
+    { target: 10, decimals: 0, suffix: "+", label: "Production systems", sub: "AI · real-time · data" },
+    { target: 5, decimals: 0, label: "Core products owned", sub: "Dispatch, billing, OCR & more" },
     { target: 543, decimals: 0, label: "Problems solved", sub: "BeeCrowd · World Rank #293" },
     { target: 2, decimals: 0, label: "IEEE publications", sub: "Deep-learning research" },
     { target: 3.82, decimals: 2, label: "CGPA / 4.00", sub: "VC's & Dean's Awards" }
@@ -269,10 +311,18 @@ const AboutSection = ({ theme }) => {
               My work spans <span className="text-blue-400 font-semibold">applied AI</span> (LLM-powered
               copilots, document intelligence), <span className="text-blue-400 font-semibold">real-time
               systems</span> (chat, live GPS tracking, push notifications) and
-              <span className="text-blue-400 font-semibold"> data engineering</span> at scale. I build with
-              Python, Django, Flask, React, PostgreSQL, TimescaleDB and Redis, and integrate complex
-              third-party platforms end-to-end — from large language models and document intelligence to
-              payments, mapping and telematics.
+              <span className="text-blue-400 font-semibold"> data engineering</span> at scale — including a
+              time-series migration that cut our database footprint by <span className="text-blue-400 font-semibold">99.94%</span> and
+              a Redis de-duplication layer that reduced GPS writes by <span className="text-blue-400 font-semibold">92.4%</span>. I build
+              with Python, Django, Flask, React, PostgreSQL, TimescaleDB and Redis.
+            </p>
+            <p className="text-lg leading-relaxed mb-6">
+              I've shipped deep <span className="text-blue-400 font-semibold">third-party integrations</span> across
+              the platform — a <span className="text-blue-400 font-semibold">QuickBooks</span> accounting sync (import
+              invoices, bills, payments, vendor credits and credit memos, with full management of customers,
+              vendors and payment methods), a <span className="text-blue-400 font-semibold">MyCarrierPackets</span>-powered
+              carriers-management portal, <span className="text-blue-400 font-semibold">Stripe</span> payments, and
+              multiple authentication flows (Firebase, Google, SSO and customer auth).
             </p>
             <p className="text-lg leading-relaxed mb-6">
               Outside product work I'm a competitive programmer (<span className="text-blue-400 font-semibold">543</span> problems
@@ -340,6 +390,16 @@ const WorkSection = ({ theme }) => {
       stack: ["WebSockets", "Push", "LLM", "Real-Time"]
     },
     {
+      icon: <Receipt size={22} />, tag: "Integrations", title: "QuickBooks Accounting Sync",
+      desc: "Users connect their QuickBooks account via OAuth to import invoices, bills, payments received, vendor credits and credit memos — with full view, edit and delete across customers, vendors, payments and payment methods.",
+      stack: ["QuickBooks API", "OAuth", "Accounting", "Django"]
+    },
+    {
+      icon: <Users size={22} />, tag: "Logistics", title: "Carriers Management Portal",
+      desc: "A customer-facing portal where users link their MyCarrierPackets account (via company DOT number) to view and manage all of their carriers — powered by extensive MyCarrierPackets API integrations and a rich feature set.",
+      stack: ["MyCarrierPackets API", "REST", "DOT", "Django"]
+    },
+    {
       icon: <Navigation size={22} />, tag: "Geospatial", title: "Live Fleet Tracking",
       desc: "Rebuilt real-time fleet tracking on a modern mapping engine with road-snapped GPS trails and smooth live vehicle movement — a ground-up migration for accuracy and performance.",
       stack: ["Mapping", "GPS", "React", "Redis"]
@@ -350,19 +410,14 @@ const WorkSection = ({ theme }) => {
       stack: ["OAuth 2.0", "Webhooks", "Telematics", "REST"]
     },
     {
-      icon: <Database size={22} />, tag: "Data Engineering", title: "Telemetry at Scale",
-      desc: "Migrated high-volume GPS telemetry to a time-series database for a 99.94% table-size reduction, and built a Redis-based GPS de-duplication layer that cut database writes by 92.4% — major cost and performance wins.",
-      stack: ["TimescaleDB", "PostgreSQL", "Redis", "Python"]
+      icon: <CreditCard size={22} />, tag: "Payments", title: "Billing & Payments",
+      desc: "Django + Stripe billing platform handling webhook-driven payments, ACH and card processing, and fee calculation — powering the company's invoicing and revenue flows.",
+      stack: ["Django", "Stripe", "Webhooks", "ACH"]
     },
     {
-      icon: <CreditCard size={22} />, tag: "Payments", title: "Billing Portal",
-      desc: "Django-based billing platform handling webhook-driven payments, ACH and card processing, and fee calculation — powering the company's invoicing and revenue flows.",
-      stack: ["Django", "Payments", "Webhooks", "ACH"]
-    },
-    {
-      icon: <ShieldCheck size={22} />, tag: "Platform", title: "SSO & Session Auth",
-      desc: "Designed session-based single sign-on to replace JWT across services, integrated with an internal identity service for a unified, secure authentication experience.",
-      stack: ["SSO", "Sessions", "Security", "Python"]
+      icon: <KeyRound size={22} />, tag: "Platform", title: "Authentication & SSO",
+      desc: "Multiple authentication flows across the platform — session-based single sign-on (replacing JWT), plus Firebase, Google and customer authentication — for a unified, secure experience across services and connected accounts.",
+      stack: ["SSO", "Firebase", "Google OAuth", "Sessions"]
     }
   ];
 
@@ -376,7 +431,8 @@ const WorkSection = ({ theme }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {systems.map((sys, i) => (
             <Reveal key={i} delay={(i % 3) * 100}>
-              <div className={`card group relative h-full rounded-2xl p-6 ${theme === 'dark' ? 'bg-gray-800/60' : 'bg-white'} shadow-lg hover:shadow-2xl hover:shadow-blue-900/20 transition-all duration-300 hover:-translate-y-2 border ${theme === 'dark' ? 'border-gray-700/50' : 'border-gray-100'} overflow-hidden`}>
+              <TiltCard className="h-full">
+              <div className={`card group relative h-full rounded-2xl p-6 ${theme === 'dark' ? 'bg-gray-800/60' : 'bg-white'} shadow-lg hover:shadow-2xl hover:shadow-blue-900/30 transition-shadow duration-300 hover:ring-1 hover:ring-blue-500/40 border ${theme === 'dark' ? 'border-gray-700/50' : 'border-gray-100'} overflow-hidden`}>
                 <div className="card-bar absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500"></div>
                 <div className="flex items-center justify-between mb-4">
                   <div className="w-11 h-11 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-transform">
@@ -392,6 +448,7 @@ const WorkSection = ({ theme }) => {
                   ))}
                 </div>
               </div>
+              </TiltCard>
             </Reveal>
           ))}
         </div>
@@ -421,7 +478,7 @@ const SkillsSection = ({ theme }) => {
 
   const cards = [
     { icon: <Sparkles size={22} className="text-blue-400 mr-3" />, title: "AI & Generative AI", items: ["LLM integration & prompt engineering", "Document intelligence & OCR pipelines", "RAG & AI copilots over live data", "Deep learning: CNN, RNN, ANN · scikit-learn"] },
-    { icon: <Cpu size={22} className="text-blue-400 mr-3" />, title: "Platforms & Integrations", items: ["Payment processing (ACH, cards, webhooks)", "Geospatial & live map tracking", "ELD / telematics integrations (OAuth)", "Real-time push notifications"] },
+    { icon: <Cpu size={22} className="text-blue-400 mr-3" />, title: "Platforms & Integrations", items: ["QuickBooks API — invoices, bills, payments, credits", "MyCarrierPackets — carrier management APIs", "Stripe payments · ACH, cards, webhooks", "Auth: Firebase, Google OAuth, SSO, ELD / telematics"] },
     { icon: <Trophy size={22} className="text-blue-400 mr-3" />, title: "Problem Solving", items: ["543 problems solved on BeeCrowd", "World Rank #293", "45th ICPC World Finals — Volunteer", "Algorithms, data structures, contests"] }
   ];
 
@@ -484,9 +541,9 @@ const ExperienceSection = ({ theme }) => {
         "Primary full-stack engineer for the dispatch and billing portals, OCR agent, EZ Mailbox and EZ Bills",
         "Built EZRI, an LLM-powered copilot suite (missing-document finder, analytics dashboard, quick prompts) over live operational data",
         "Designed a full real-time chat platform: group chat, reactions, pins, broadcasts, push notifications, AI-assisted message polishing and translation",
-        "Migrated GPS telemetry to a time-series database (99.94% table-size reduction) and built a Redis dedup layer (92.4% fewer writes)",
-        "Integrated major ELD / telematics providers (OAuth + webhooks) and rebuilt live fleet tracking with road-snapped trails",
-        "Built the Django billing portal (webhook payments, ACH/card) and led the SSO / session-auth migration away from JWT"
+        "Built a QuickBooks integration to import invoices, bills, payments, vendor credits and credit memos, with full management of customers, vendors and payment methods",
+        "Developed a MyCarrierPackets-powered carriers-management portal (DOT-based account linking) for customers to manage their carriers",
+        "Integrated Stripe payments and multiple auth flows (Firebase, Google, SSO); rebuilt live fleet tracking and scaled GPS telemetry via a time-series + Redis pipeline"
       ]
     },
     {
@@ -554,7 +611,8 @@ const ProjectsSection = ({ theme }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project, i) => (
             <Reveal key={i} delay={(i % 3) * 100}>
-              <div className={`group h-full ${theme === 'dark' ? 'bg-gray-800/60 border border-gray-700/50' : 'bg-gray-50'} rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-blue-900/20 transition-all duration-300 hover:-translate-y-2`}>
+              <TiltCard className="h-full" max={4}>
+              <div className={`group h-full ${theme === 'dark' ? 'bg-gray-800/60 border border-gray-700/50' : 'bg-gray-50'} rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-blue-900/30 transition-shadow duration-300 hover:ring-1 hover:ring-blue-500/40`}>
                 <div className="h-48 bg-gray-700 overflow-hidden relative">
                   <img src={project.image} alt={project.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
@@ -579,6 +637,7 @@ const ProjectsSection = ({ theme }) => {
                   </div>
                 </div>
               </div>
+              </TiltCard>
             </Reveal>
           ))}
         </div>
@@ -779,6 +838,7 @@ const App = () => {
 
       <HeroSection theme={theme} />
       <StatsSection theme={theme} />
+      <TechMarquee theme={theme} />
       <AboutSection theme={theme} />
       <WorkSection theme={theme} />
       <SkillsSection theme={theme} />
@@ -850,9 +910,16 @@ const App = () => {
 
         .cursor { display: inline-block; width: 2px; animation: pulse-slow 1s infinite; }
 
+        .tilt { transform-style: preserve-3d; transition: transform .25s cubic-bezier(.2,.7,.2,1); }
+
+        @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        .marquee { display: flex; width: max-content; animation: marquee 32s linear infinite; }
+        .marquee-wrap:hover .marquee { animation-play-state: paused; }
+
         @media (prefers-reduced-motion: reduce) {
           .reveal { opacity: 1 !important; transform: none !important; }
-          .aurora, .floaty, .gradient-text, .animate-swing, .animate-spin-slow, .animate-bounce-slow, .animate-pulse-slow { animation: none !important; }
+          .tilt { transform: none !important; }
+          .aurora, .floaty, .gradient-text, .animate-swing, .animate-spin-slow, .animate-bounce-slow, .animate-pulse-slow, .marquee { animation: none !important; }
         }
       `}</style>
     </div>
