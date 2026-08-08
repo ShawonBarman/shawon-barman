@@ -559,32 +559,39 @@ const ExperienceSection = ({ theme }) => {
       <div className="container mx-auto px-4">
         <SectionHeading>Experience</SectionHeading>
 
-        <div className="relative border-l-2 border-blue-500/60 ml-3 md:ml-6 pl-6 md:pl-8 space-y-10">
-          {roles.map((exp, i) => (
-            <Reveal key={i} delay={i * 100}>
-              <div className={`${theme === 'dark' ? 'bg-gray-800/60 border border-gray-700/50' : 'bg-white'} rounded-2xl p-6 shadow-lg relative`}>
-                <span className="absolute -left-[2.6rem] md:-left-[3.1rem] top-6 w-5 h-5 bg-blue-500 rounded-full border-4 border-gray-900 animate-pulse-slow"></span>
-                <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-3">
-                  <h3 className="text-xl font-bold flex items-center">
-                    <BriefcaseBusiness className="mr-2 text-blue-400" size={20} />{exp.title}
-                  </h3>
-                  <span className="text-blue-400 font-medium text-sm">{exp.period}</span>
+        <div className="relative ml-1 md:ml-3">
+          {/* vertical timeline line */}
+          <div className={`absolute top-3 bottom-3 left-[10px] w-0.5 ${theme === 'dark' ? 'bg-blue-500/40' : 'bg-blue-500/30'}`}></div>
+          <div className="space-y-10">
+            {roles.map((exp, i) => (
+              <Reveal key={i} delay={i * 100}>
+                <div className="relative pl-10">
+                  {/* dot centered on the line */}
+                  <span className={`absolute left-[10px] top-7 -translate-x-1/2 w-4 h-4 bg-blue-500 rounded-full ring-4 ${theme === 'dark' ? 'ring-gray-900' : 'ring-gray-50'} animate-pulse-slow z-10`}></span>
+                  <div className={`${theme === 'dark' ? 'bg-gray-800/60 border border-gray-700/50' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
+                    <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-3">
+                      <h3 className="text-xl font-bold flex items-center">
+                        <BriefcaseBusiness className="mr-2 text-blue-400" size={20} />{exp.title}
+                      </h3>
+                      <span className="text-blue-400 font-medium text-sm">{exp.period}</span>
+                    </div>
+                    {exp.tasks ? (
+                      <ul className="mt-3 space-y-2">
+                        {exp.tasks.map((task, j) => (
+                          <li key={j} className="flex items-start gap-2 hover:translate-x-1 transition-transform">
+                            <Zap size={14} className="text-blue-400 mt-1.5 flex-shrink-0" />
+                            <span>{task}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="mt-2">{exp.content}</p>
+                    )}
+                  </div>
                 </div>
-                {exp.tasks ? (
-                  <ul className="mt-3 space-y-2">
-                    {exp.tasks.map((task, j) => (
-                      <li key={j} className="flex items-start gap-2 hover:translate-x-1 transition-transform">
-                        <Zap size={14} className="text-blue-400 mt-1.5 flex-shrink-0" />
-                        <span>{task}</span>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="mt-2">{exp.content}</p>
-                )}
-              </div>
-            </Reveal>
-          ))}
+              </Reveal>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -864,7 +871,7 @@ const App = () => {
         .reveal { opacity: 0; transform: translateY(var(--reveal-y, 28px)); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); will-change: opacity, transform; }
         .reveal-in { opacity: 1; transform: translateY(0); }
 
-        .uline { transform: scaleX(0); transform-origin: left; transition: transform .8s .15s cubic-bezier(.2,.7,.2,1); }
+        .uline { transform: scaleX(0); transform-origin: left; transition: transform 1.5s .35s cubic-bezier(.22,.61,.36,1); }
         .reveal-in .uline { transform: scaleX(1); }
 
         @keyframes aurora {
